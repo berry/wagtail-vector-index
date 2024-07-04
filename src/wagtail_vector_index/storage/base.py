@@ -1,4 +1,5 @@
 import copy
+import logging
 from collections.abc import Generator, Iterable, Mapping, Sequence
 from dataclasses import dataclass
 from typing import Any, ClassVar, Generic, Protocol, TypeVar
@@ -11,6 +12,8 @@ from wagtail_vector_index.ai_utils.backends.base import BaseEmbeddingBackend
 from wagtail_vector_index.storage import (
     get_storage_provider,
 )
+
+logging.basicConfig(level=logging.DEBUG)
 
 StorageProviderClass = TypeVar("StorageProviderClass")
 ConfigClass = TypeVar("ConfigClass")
@@ -180,6 +183,9 @@ class VectorIndex(Generic[ConfigClass]):
         except StopIteration as e:
             raise ValueError("No embeddings were generated for the given query.") from e
         similar_documents = self.get_similar_documents(query_embedding, limit=limit)
+
+        logging.debug(f"Found {len(similar_documents)} similar documents")
+        logging.debug(f"Similar documents: {similar_documents}")
 
         # Eliminate duplicates of the same objects.
         return self._deduplicate_list(
