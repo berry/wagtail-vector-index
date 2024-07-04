@@ -185,7 +185,8 @@ class VectorIndex(Generic[ConfigClass]):
         similar_documents = self.get_similar_documents(query_embedding, limit=limit)
 
         documents_list = list(similar_documents)
-        logging.debug(f"Similar documents: {documents_list}")
+        log_list = [doc.metadata for doc in documents_list]
+        logging.debug(f"Similar documents: {log_list}")
 
         # Eliminate duplicates of the same objects.
         return self._deduplicate_list(
