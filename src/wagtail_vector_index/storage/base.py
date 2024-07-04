@@ -184,7 +184,6 @@ class VectorIndex(Generic[ConfigClass]):
             raise ValueError("No embeddings were generated for the given query.") from e
         similar_documents = self.get_similar_documents(query_embedding, limit=limit)
 
-        logging.debug(f"Found {len(similar_documents)} similar documents")
         logging.debug(f"Similar documents: {similar_documents}")
 
         # Eliminate duplicates of the same objects.
